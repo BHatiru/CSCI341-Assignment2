@@ -14,9 +14,15 @@ def home():
 def user_list():
     users = User.query.all()
     form = UserForm()
-    return render_template('user.html', users=users, form=form)
+    return render_template('User/user.html', users=users, form=form)
 
-@app.route('/add_user', methods=['POST'])
+# @app.route('/caregivers', endpoint='caregiver_list')
+# def caregiver_list():
+#     caregivers = Caregiver.query.all()
+#     form = CaregiverForm()
+#     return render_template('Caregiver/caregiver.html', caregivers=caregivers, form=form)
+
+@app.route('/add_user', methods=['GET','POST'])
 def add_user():
     
     form = UserForm()
@@ -34,9 +40,9 @@ def add_user():
         db.session.commit()
         flash('User added successfully', 'success')
         return redirect(url_for('user_list'))
-    return render_template('user.html', form=form, users=User.query.all())
+    return render_template('User/user.html', form=form, users=User.query.all())
 
-@app.route('/edit_user', methods=['GET', 'POST'])
+@app.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     form = UserForm(obj=user)
@@ -49,14 +55,28 @@ def edit_user(user_id):
         user.profile_description = form.profile_description.data
         user.password = form.password.data
         db.session.commit()
-        flash('User updated successfully', 'success')
-        return render_template('user.html', users=User.query.all(), form=form)
-    return render_template('edit_user.html', form=form, user=user)
 
-@app.route('/delete_user', methods=['GET', 'POST'])
+        flash('User updated successfully', 'success')
+        return redirect(url_for('user_list'))
+    return render_template('User/edit_user.html', form=form, user=user)
+
+@app.route('/delete_user/<int:user_id>', methods=['GET', 'POST'])
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
 
     db.session.delete(user)
     db.session.commit()
+    flash('User deleted successfully', 'success')
     return redirect(url_for('user_list'))
+
+
+@app.route('/search_users', methods=['GET'])
+def search_users():
+    attribute = request.args.get('attribute')
+    value = request.args.get('value')
+
+    form = UserForm()
+    users = User.query.filter(User.__dict__[attribute].like(f'%{value}%')).all()
+
+    return render_template('User/user.html', users=users, form=form)
+

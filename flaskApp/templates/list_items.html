@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ model_name|capitalize }} List{% endblock %}
+
+{% block content %}
+{% include 'search_component.html' %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+<!-- Model-specific components -->
+<div class="h-200 p-4 text-white bg-primary border rounded-3">
+    <h2>
+    {{ model_name|capitalize }} List
+    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#add{{ model_name|capitalize }}Modal">
+        Add {{ model_name|capitalize }}
+    </button>
+    </h2>
+</div>
+
+{% include 'table_partial.html' with
+model_name=model_name
+fields=fields
+items=items
+%}
+
+{% endblock %}
+
+  

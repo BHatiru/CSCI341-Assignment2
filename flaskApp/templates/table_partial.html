@@ -1,0 +1,71 @@
+<!-- table_partial.html -->
+
+<div class="table-responsive">
+    <table class="table table-hover table-white" id="{{ model_name }}Table">
+      <thead>
+        <tr class="text-center">
+          {% for field in fields %}
+            <th scope="col" style="vertical-align: middle;">{{ field|capitalize }}</th>
+          {% endfor %}
+          <th scope="col" style="vertical-align: middle;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+          <tr>
+            {% for field in fields %}
+              <td>{{ getattr(item, field) }}</td>
+            {% endfor %}
+            <td>
+              <div class="d-flex justify-content-between">
+                <a href="/edit_{{ model_name }}/{{ item.id }}" class="btn btn-sm btn-info mr-2"
+                  data-toggle="modal" data-target="#edit{{ model_name|capitalize }}Modal{{ item.id }}">Edit</a>
+                <a href="/delete_{{ model_name }}/{{ item.id }}" class="btn btn-sm btn-danger"
+                  onclick="return confirm('Are you sure?')">Delete</a>
+              </div>
+            </td>
+          </tr>
+  
+          <!-- Edit Item Modal -->
+          <div class="modal fade" id="edit{{ model_name|capitalize }}Modal{{ item.id }}" aria-hidden="true" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit {{ model_name|capitalize }}</h5>
+                </div>
+                <div class="modal-body">
+                  {% include 'edit_{{ model_name }}.html' %}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Add Item Modal -->
+  <div class="modal fade" id="addItemModal" aria-hidden="true" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add {{ model_name|capitalize }}</h5>
+        </div>
+        <div class="modal-body">
+          {% include f'{model_name}/add_{model_name.lower()}.html' %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}

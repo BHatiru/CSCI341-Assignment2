@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %}User List{% endblock %} {% block
+{% extends 'base.html' %} {% block title %}User Table{% endblock %} {% block
 content %}
 
 {% with messages = get_flashed_messages() %}
@@ -15,6 +15,33 @@ content %}
 {% endif %}
 {% endwith %}
 
+
+<!-- Search Component -->
+<div class="mb-3">
+  <form class="form-inline" method="GET" action="/search_users">
+    <div class="form-group mr-2">
+      <label for="attribute" ><h3>Seacrh user/users by</h3> </label>
+    </div>
+    <div class="form-group mr-2">
+      <select class="form-control" name="attribute">
+        <option value="user_id">User ID</option>
+        <option value="email">Email</option>
+        <option value="given_name">Given Name</option>
+        <option value="surname">Surname</option>
+        <option value="city">City</option>
+        <option value="phone_number">Phone Number</option>
+        <option value="profile_description">Profile Description</option>
+      </select>
+    </div>
+    <div class="form-group mr-2">
+      <input type="text" class="form-control" name="value" placeholder="Enter value">
+    </div>
+    <button type="submit" class="btn btn-primary">Find</button>
+    <div style="margin-left: 20px;"><a style="color: gray;">Search with empty value to see whole table</a></div>
+    
+  </form>
+</div>
+
 <div class="h-200 p-4 text-white bg-primary border rounded-3">
   <h2>
     User List
@@ -22,22 +49,21 @@ content %}
       Add User
     </button>
   </h2>
-
-
 </div>
+
 <div class="table-responsive">
-  <table class="table table-hover table-white">
+  <table class="table table-hover table-white" id="#userTable">
     <thead>
-      <tr class="text-center">
-        <th scope="col">User ID</th>
-        <th scope="col">Email</th>
-        <th scope="col">Given Name</th>
-        <th scope="col">Surname</th>
-        <th scope="col">City</th>
+      <tr class="text-center" >
+        <th scope="col" >User ID</th>
+        <th scope="col" style=" vertical-align: middle;">Email</th>
+        <th scope="col" >Given Name</th>
+        <th scope="col" style=" vertical-align: middle;">Surname</th>
+        <th scope="col" style=" vertical-align: middle;">City</th>
         <th scope="col">Phone Number</th>
-        <th scope="col">Profile Description</th>
-        <th scope="col">password</th>
-        <th scope="col">Actions</th>
+        <th scope="col" style=" vertical-align: middle;">Profile Description</th>
+        <th scope="col" style=" vertical-align: middle;">password</th>
+        <th scope="col" style=" vertical-align: middle;">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -53,22 +79,24 @@ content %}
         <td>{{ user.password }}</td>
         <td>
           <div class="d-flex justify-content-between">
-            <a href="{{ url_for('edit_user', user_id=user.user_id) }}" class="btn btn-sm btn-info mr-2"
-              data-toggle="modal" data-target="#editUserModal">Edit</a>
-            <a href="{{ url_for('delete_user', user_id=user.user_id) }}" class="btn btn-sm btn-danger"
+            <a href="/edit_user/{{user.user_id}}" class="btn btn-sm btn-info mr-2"
+              data-toggle="modal" data-target="#editUserModal{{user.user_id}}">Edit</a>
+            <a href="/delete_user/{{user.user_id}}" class="btn btn-sm btn-danger"
               onclick="return confirm('Are you sure?')">Delete</a>
           </div>
         </td>
       </tr>
-      {% endfor %}
+
       <!-- Edit User Modal -->
-      <div class="modal fade" id="editUserModal" aria-hidden="true" tabindex="-1" role="dialog">
+      <div class="modal fade" id="editUserModal{{user.user_id}}" aria-hidden="true" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Edit User</h5>
             </div>
-            <div class="modal-body">{% include 'edit_user.html' %}</div>
+            <div class="modal-body">
+              {% include 'User/edit_user.html' %}
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">
                 Close
@@ -77,7 +105,7 @@ content %}
           </div>
         </div>
       </div>
-
+      {% endfor %}
     </tbody>
   </table>
 </div>
@@ -91,7 +119,7 @@ content %}
         <h5 class="modal-title">Add User</h5>
       </div>
       <div class="modal-body">
-        {% include 'add_user.html' %}
+        {% include 'User/add_user.html' %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -101,5 +129,6 @@ content %}
     </div>
   </div>
 </div>
+
 
 {% endblock %}

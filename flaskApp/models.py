@@ -4,20 +4,20 @@ from sqlalchemy.orm import relationship
 from flaskApp import db
 import enum
 
-# class GENDER(enum.Enum):
-#     Male = 'Male'
-#     Female = 'Female'
-#     Other = 'Other'
+class GENDER(enum.Enum):
+    Male = 'Male'
+    Female = 'Female'
+    Other = 'Other'
 
-# class CARE_TYPE(enum.Enum):
-#     babysitter = 'babysitter'
-#     caregiver_for_elderly = 'caregiver for elderly'
-#     playmate_for_children = 'playmate for children'
+class CARE_TYPE(enum.Enum):
+    babysitter = 'babysitter'
+    caregiver_for_elderly = 'caregiver for elderly'
+    playmate_for_children = 'playmate for children'
 
-# class STATUS(enum.Enum):
-#     accepted = 'accepted'
-#     declined = 'declined'
-#     pending = 'pending'
+class STATUS(enum.Enum):
+    accepted = 'accepted'
+    declined = 'declined'
+    pending = 'pending'
 
 # Models
 class User(db.Model):
@@ -32,6 +32,7 @@ class User(db.Model):
     profile_description = db.Column(db.Text, nullable=False)
     password = db.Column(db.String(255), nullable=False)
 
+    
 # class Caregiver(db.Model):
 #     __tablename__ = 'caregiver'
 
@@ -46,10 +47,10 @@ class User(db.Model):
 # class Member(db.Model):
 #     __tablename__ = 'member'
 
-#     member_user_id = Column(Integer, ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True)
-#     house_rules = Column(Text, nullable=False)
+#     member_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True)
+#     house_rules = db.Column(db.Text, nullable=False)
 
-#     user = relationship("User")
+#     user = relationship("User", back_populates="member")
 
 
 # class Address(db.Model):
