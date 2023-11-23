@@ -5,7 +5,7 @@ content %}
 {% if messages %}
 {% for message in messages %}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
-  
+
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">×</span>
   </button>
@@ -20,10 +20,12 @@ content %}
 <div class="mb-3">
   <form class="form-inline" method="GET" action="/search_users">
     <div class="form-group mr-2">
-      <label for="attribute" ><h3>Seacrh user/users by</h3> </label>
+      <label for="attribute">
+        <h3>Seacrh Users by</h3>
+      </label>
     </div>
     <div class="form-group mr-2">
-      <select class="form-control" name="attribute">
+      <select class="form-control" name="attribute" style="font-weight: bold;">
         <option value="user_id">User ID</option>
         <option value="email">Email</option>
         <option value="given_name">Given Name</option>
@@ -38,7 +40,7 @@ content %}
     </div>
     <button type="submit" class="btn btn-primary">Find</button>
     <div style="margin-left: 20px;"><a style="color: gray;">Search with empty value to see whole table</a></div>
-    
+
   </form>
 </div>
 
@@ -54,21 +56,22 @@ content %}
 <div class="table-responsive">
   <table class="table table-hover table-white" id="#userTable">
     <thead>
-      <tr class="text-center" >
-        <th scope="col" >User ID</th>
+      <tr class="text-center">
+        <th scope="col">User ID</th>
         <th scope="col" style=" vertical-align: middle;">Email</th>
-        <th scope="col" >Given Name</th>
+        <th scope="col">Given Name</th>
         <th scope="col" style=" vertical-align: middle;">Surname</th>
         <th scope="col" style=" vertical-align: middle;">City</th>
         <th scope="col">Phone Number</th>
         <th scope="col" style=" vertical-align: middle;">Profile Description</th>
         <th scope="col" style=" vertical-align: middle;">password</th>
         <th scope="col" style=" vertical-align: middle;">Actions</th>
+        <th scope="col" style=" vertical-align: middle;">Register Role</th>
       </tr>
     </thead>
     <tbody>
       {% for user in users %}
-      <tr>
+      <tr class="text-center">
         <td>{{ user.user_id }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.given_name }}</td>
@@ -79,12 +82,29 @@ content %}
         <td>{{ user.password }}</td>
         <td>
           <div class="d-flex justify-content-between">
-            <a href="/edit_user/{{user.user_id}}" class="btn btn-sm btn-info mr-2"
-              data-toggle="modal" data-target="#editUserModal{{user.user_id}}">Edit</a>
+            <a href="/edit_user/{{user.user_id}}" class="btn btn-sm btn-info mr-2" data-toggle="modal"
+              data-target="#editUserModal{{user.user_id}}">Edit</a>
             <a href="/delete_user/{{user.user_id}}" class="btn btn-sm btn-danger"
               onclick="return confirm('Are you sure?')">Delete</a>
           </div>
         </td>
+        <td>
+          <div class="d-flex justify-content-between">
+            {% if not user.has_role() %}
+            <a href="/add_caregiver/{{user.user_id}}" class="btn btn-sm btn-success mr-1" data-toggle="modal"
+              data-target="#addCaregiverModal{{user.user_id}}">Caregiver</a>
+            <a href="/add_member/{{user.user_id}}" class="btn btn-sm btn-success mr-2" data-toggle="modal"
+              data-target="#addMemberModal{{user.user_id}}">Member</a>
+            {% else %}
+            <!-- show current role -->
+              {% if user.caregiver %}
+              <a>Caregiver</a>
+              {% else %}
+              <a>Member</a>
+              {% endif %}
+
+            {% endif %}
+          </div>
       </tr>
 
       <!-- Edit User Modal -->
@@ -96,6 +116,56 @@ content %}
             </div>
             <div class="modal-body">
               {% include 'User/edit_user.html' %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Set Caregiver Modal -->
+      <div class="modal fade" id="addCaregiverModal{{user.user_id}}" aria-hidden="true" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Set Caregiver</h5>
+            </div>
+            <div class="modal-body">
+              {% include 'Caregiver/add_caregiver.html' %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Set Member Modal -->
+      <div class="modal fade" id="addMemberModal{{user.user_id}}" aria-hidden="true" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Member</h5>
+            </div>
+            <div class="modal-body">
+              {% if formM %}
+              <form method="post" action="{{url_for('add_member', user_id=user.user_id)}}">
+                {{ formM.hidden_tag() }}
+                <div class="form-group">
+                  {{ formM.house_rules.label }} {{ formM.house_rules(class="form-control", required="1") }}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Set Member</button>
+                </div>
+              </form>
+              {% else %}
+                <p>No form data available.</p>
+              {% endif %}
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">

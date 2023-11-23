@@ -1,0 +1,84 @@
+{% extends 'base.html' %} {% block title %}Members Table{% endblock %} {% block
+    content %}
+    
+    <!-- Search Component -->
+    <div class="mb-3">
+      <form class="form-inline" method="GET" action="/search_members">
+        <div class="form-group mr-2">
+          <label for="attribute" ><h3>Seacrh Member by</h3> </label>
+        </div>
+        <div class="form-group mr-2">
+          <select class="form-control" name="attribute">
+            <option value="member_user_id">User ID</option>
+            <option value="house_rules">House Rules</option>
+          </select>
+        </div>
+        <div class="form-group mr-2">
+          <input type="text" class="form-control" name="value" placeholder="Enter value">
+        </div>
+        <button type="submit" class="btn btn-primary">Find</button> 
+      </form>
+    </div>
+    
+    <div class="h-200 p-4 text-white bg-primary border rounded-3">
+      <h2>
+        Members List
+      </h2>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table table-hover table-white" id="#memberTable">
+        <thead>
+          <tr class="text-center" >
+            <th scope="col" >Member ID</th>
+            <th scope="col" style=" vertical-align: middle;">House rules</th>
+            <th scope="col" style=" vertical-align: middle;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for member in members %}
+          <tr >
+            <td class="text-center">{{member.member_user_id }}</td>
+            <td>{{member.house_rules}}</td>
+            <td>
+              <div class="d-flex justify-content-between">
+                <a href="/edit_member/{{member.member_user_id}}" class="btn btn-sm btn-info mr-2"
+                  data-toggle="modal" data-target="#editMemberModal{{member.member_user_id}}">Edit</a>
+                <a href="/delete_member/{{member.member_user_id}}" class="btn btn-sm btn-danger"
+                  onclick="return confirm('Are you sure?')">Delete</a>
+              </div>
+            </td>
+          </tr>
+    
+          <!-- Edit Member Modal -->
+          <div class="modal fade" id="editMemberModal{{member.member_user_id}}" aria-hidden="true" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Member</h5>
+                </div>
+                <div class="modal-body">
+                  <form method="post" action="{{ url_for('edit_member', member_user_id=member.member_user_id) }}">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                      {{ form.house_rules.label }} {{ form.house_rules(class="form-control", value = member.house_rules) }}
+                    </div>
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
+    {% endblock %}

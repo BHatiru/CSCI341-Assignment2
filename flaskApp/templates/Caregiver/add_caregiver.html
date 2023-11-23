@@ -1,0 +1,24 @@
+{% block content %}
+{% if formC %}
+<form method="post" action="{{url_for('add_caregiver', user_id=user.user_id)}}">
+    {{ formC.hidden_tag() }}
+    <div class="form-group">
+        {{ formC.photo.label }} {{ formC.photo(class="form-control", required="1") }}
+    </div>
+    <div class="form-group">
+        {{ formC.gender.label }} {{ formC.gender(class="form-control", required="1") }}
+    </div>
+    <div class="form-group">
+        {{ formC.caregiving_type.label }} {{ formC.caregiving_type(class="form-control", required="1") }}
+    </div>
+    <div class="form-group">
+        {{ formC.hourly_rate.label }} {{ formC.hourly_rate(class="form-control", required="1") }}
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Add Caregiver</button>
+    </div>
+</form>
+{% else %}
+<p>No form data available.</p>
+{% endif %}
+{% endblock %}

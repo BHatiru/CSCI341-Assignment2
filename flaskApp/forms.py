@@ -19,7 +19,7 @@ class STATUS(enum.Enum):
     pending = 'pending'
 
 class UserForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired()])
     given_name = StringField('Given Name', validators=[DataRequired()])
     surname = StringField('Surname', validators=[DataRequired()])
     city = StringField('City', validators=[DataRequired()])
@@ -27,14 +27,14 @@ class UserForm(FlaskForm):
     profile_description = TextAreaField('Profile Description', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
 
-# class CaregiverForm(FlaskForm):
-#     photo = StringField('Photo URL', validators=[DataRequired()])
-#     gender = SelectField('Gender', choices=[(gender.name, gender.value) for gender in GENDER], validators=[DataRequired()])
-#     caregiving_type = SelectField('Caregiving Type', choices=[(care_type.name, care_type.value) for care_type in CARE_TYPE], validators=[DataRequired()])
-#     hourly_rate = DecimalField('Hourly Rate', validators=[DataRequired()])
+class CaregiverForm(FlaskForm):
+    photo = StringField('Photo URL', validators=[DataRequired()])
+    gender = SelectField('Gender', choices=[(gender.name, gender.value) for gender in GENDER], validators=[DataRequired()])
+    caregiving_type = SelectField('Caregiving Type', choices=[(care_type.name, care_type.value) for care_type in CARE_TYPE], validators=[DataRequired()])
+    hourly_rate = DecimalField('Hourly Rate', validators=[DataRequired()])
 
-# class MemberForm(FlaskForm):
-#     house_rules = TextAreaField('House Rules', validators=[DataRequired()])
+class MemberForm(FlaskForm):
+    house_rules = TextAreaField('House Rules', validators=[DataRequired()])
 
 # class AddressForm(FlaskForm):
 #     house_number = StringField('House Number', validators=[DataRequired()])

@@ -22,13 +22,22 @@
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('user_list') }}">Users</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('caregiver_list') }}">Caregivers</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('member_list') }}">Members</a>
+      </li>
     </ul>
   </div>
 </nav>
 
-<div class="container mt-4">
-    {% block content %}{% endblock %}
-</div>
+
+  <div class="container-fluid mt-4">
+  {% block content %}{% endblock %}
+  </div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

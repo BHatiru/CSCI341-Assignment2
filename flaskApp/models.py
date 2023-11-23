@@ -13,16 +13,23 @@ class CARE_TYPE(enum.Enum):
     babysitter = 'babysitter'
     caregiver_for_elderly = 'caregiver for elderly'
     playmate_for_children = 'playmate for children'
+    def _generate_next_value_(name, start, count, last_values):
+    # Override the default behavior to keep spaces in enum values
+        return name.replace('_', ' ')
 
 class STATUS(enum.Enum):
     accepted = 'accepted'
     declined = 'declined'
     pending = 'pending'
+    def _generate_next_value_(name, start, count, last_values):
+    # Override the default behavior to keep spaces in enum values
+        return name.replace('_', ' ')
 
 # Models
 class User(db.Model):
     __tablename__ = 'users'
 
+    
     user_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     given_name = db.Column(db.String(50), nullable=False)
@@ -32,25 +39,34 @@ class User(db.Model):
     profile_description = db.Column(db.Text, nullable=False)
     password = db.Column(db.String(255), nullable=False)
 
+
+    caregiver = relationship("Caregiver", back_populates="user", cascade="all, delete-orphan",
+                            primaryjoin="User.user_id == foreign(Caregiver.caregiver_user_id)")
     
-# class Caregiver(db.Model):
-#     __tablename__ = 'caregiver'
+    member = relationship("Member", back_populates="user", cascade="all, delete-orphan", 
+                          primaryjoin="User.user_id == foreign(Member.member_user_id)")
+    
+    def has_role(self):
+        return True if self.caregiver or self.member else False
 
-#     caregiver_user_id = Column(Integer, ForeignKey('user.user_id', ondelete='CASCADE'), primary_key=True)
-#     photo = Column(String(255) , nullable=False)
-#     gender = Column(Enum(GENDER) , nullable=False)
-#     caregiving_type = Column(Enum(CARE_TYPE), nullable=False)
-#     hourly_rate = Column(DECIMAL(10, 2), nullable=False)
+class Caregiver(db.Model):
+    __tablename__ = 'caregiver'
 
-#     user = relationship("User")
+    caregiver_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True)
+    photo = db.Column(db.String(255) , nullable=False)
+    gender = db.Column(db.String(50) , nullable=False)
+    caregiving_type = db.Column(db.String(50), nullable=False)
+    hourly_rate = db.Column(db.DECIMAL(10, 2), nullable=False)
 
-# class Member(db.Model):
-#     __tablename__ = 'member'
+    user = relationship("User", back_populates="caregiver")
 
-#     member_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True)
-#     house_rules = db.Column(db.Text, nullable=False)
+class Member(db.Model):
+    __tablename__ = 'member'
 
-#     user = relationship("User", back_populates="member")
+    member_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True)
+    house_rules = db.Column(db.Text, nullable=False)
+
+    user = relationship("User", back_populates="member")
 
 
 # class Address(db.Model):

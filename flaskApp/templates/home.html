@@ -3,6 +3,12 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <h2>Welcome to Flask Web App</h2>
-  <!-- Add any content you want for the home page -->
+<div class="jumbotron">
+  <h1 class="display-4">Welcome to Our Caregiver Network! (Admin Rights)</h1>
+  <p class="lead">Connecting caregivers with those in need of assistance.</p>
+  <hr class="my-4">
+  <p>Explore our platform to find caregivers, manage user profiles, and make appointments.</p>
+  <a class="btn btn-primary btn-lg" href="/users" role="button">Browse Users</a>
+  <a class="btn btn-success btn-lg" href="/caregivers" role="button">Browse Caregivers</a>
+</div>
 {% endblock %}
