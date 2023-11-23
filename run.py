@@ -5,4 +5,6 @@ if __name__ == '__main__':
         # Create database tables
         if db is None:
             db.create_all()
-    app.run(debug=True)
+
+
+
