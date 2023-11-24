@@ -108,7 +108,7 @@ def edit_caregiver(caregiver_user_id):
     form = CaregiverForm(obj=caregiver)
     if form.validate_on_submit():
         caregiver.photo = form.photo.data
-        caregiver.gender = form.photo.data
+        caregiver.gender = form.gender.data
         caregiver.caregiving_type = form.caregiving_type.data
         caregiver.hourly_rate = form.hourly_rate.data
         db.session.commit()

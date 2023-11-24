@@ -29,8 +29,8 @@ class UserForm(FlaskForm):
 
 class CaregiverForm(FlaskForm):
     photo = StringField('Photo URL', validators=[DataRequired()])
-    gender = SelectField('Gender', choices=[(gender.name, gender.value) for gender in GENDER])
-    caregiving_type = SelectField('Caregiving Type', choices=[(care_type.name, care_type.value) for care_type in CARE_TYPE] )
+    gender = SelectField('Gender', choices=[(gender.value, gender.value) for gender in GENDER],  validators=[DataRequired()])
+    caregiving_type = SelectField('Caregiving Type', choices=[(care_type.value, care_type.value) for care_type in CARE_TYPE],  validators=[DataRequired()] )
     hourly_rate = DecimalField('Hourly Rate', validators=[DataRequired()])
 
 class MemberForm(FlaskForm):
