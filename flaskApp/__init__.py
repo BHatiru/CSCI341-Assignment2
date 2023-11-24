@@ -16,11 +16,11 @@ cloud_sql_connection_name = 'projectcsci341-406020:europe-central2:postgres-db-c
 app.config['SECRET_KEY'] = 'babatyr123'
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-tmp_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'tmp'))
+# tmp_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'tmp'))
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tmp/data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://{user}:{password}@/cloudsql/{cloud_sql_connection_name}/{database}'
+# app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://{user}:{password}@/cloudsql/{cloud_sql_connection_name}/{database}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
