@@ -18,7 +18,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 # tmp_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'tmp'))
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.db')
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://{user}:{password}@/cloudsql/{cloud_sql_connection_name}/{database}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
