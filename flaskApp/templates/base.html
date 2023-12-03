@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xw5LBe0+mSNxC2pNUowOq0goJMS5a1s3yZ0e5Yqxu70qG2jMz9v1i+U1R7GjTz3RxsEvl8EdBZbdlAJxPgpB4A==" crossorigin="anonymous" />
     <title>{% block title %}Flask Web App{% endblock %}</title>
 </head>
 <body>
@@ -27,6 +28,11 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('member_list') }}">Members</a>
+      </li>
+      <li class="nav-item ml-auto">
+        <a class="nav-link ml-auto" href="https://github.com/BHatiru/CSCI341-Assignment2" target="_blank">
+          <i class="fab fa-github"></i> GitHub Repo
+        </a>
       </li>
     </ul>
   </div>
